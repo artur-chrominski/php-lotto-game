@@ -37,4 +37,4 @@ if (empty($errors)) {
 $_SESSION['login_errors'] = $errors;
 header("Location: ../../index.php");
 exit();
-?>
+
