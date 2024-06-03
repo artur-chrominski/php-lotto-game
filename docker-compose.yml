@@ -1,0 +1,42 @@
+version: '3'
+services:
+  php_apache:
+    container_name: php_8.2_apache_container
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    volumes:
+      - .:/var/www/html
+      - ./000-default.conf:/etc/apache2/sites-available/000-default.conf
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.1.0
+    container_name: mysql_8.1.0_container
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: lotto_game
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql  
+
+  redis:
+    image: redis:7.2.1
+    container_name: redis_7.2.1_container
+    restart: always
+    ports:
+      - 6379:6379  
+
+  phpmyadmin:
+    image: phpmyadmin:5.2.1
+    container_name: phpmyadmin_container
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_HOST=mysql
+      - PMA_PORT=3306
